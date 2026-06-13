@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/schemas/gpu-trace.schema.json",
+  "title": "GPU Trace Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trace_id",
+    "schema_version",
+    "source",
+    "frames",
+    "resources",
+    "events"
+  ],
+  "properties": {
+    "trace_id": {"type": "string", "minLength": 1},
+    "schema_version": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path_or_handle"],
+      "properties": {
+        "kind": {"enum": ["json-replay", "renderdoc", "live-hook", "manual-fixture"]},
+        "path_or_handle": {"type": "string", "minLength": 1},
+        "build_sha": {"type": "string"},
+        "abi_version": {"type": "string"}
+      }
+    },
+    "frames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["frame_id"],
+        "properties": {
+          "frame_id": {"type": "integer", "minimum": 0},
+          "present_seq": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["resource_id", "kind"],
+        "properties": {
+          "resource_id": {"type": "string", "minLength": 1},
+          "kind": {"type": "string", "minLength": 1},
+          "format": {"type": "string"},
+          "width": {"type": "integer", "minimum": 0},
+          "height": {"type": "integer", "minimum": 0},
+          "depth": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["seq", "frame_id", "event_type"],
+        "properties": {
+          "seq": {"type": "integer", "minimum": 0},
+          "frame_id": {"type": "integer", "minimum": 0},
+          "pass_id": {"type": "string"},
+          "event_type": {
+            "enum": [
+              "bind",
+              "clear",
+              "copy",
+              "draw",
+              "dispatch",
+              "unbind",
+              "restore",
+              "present",
+              "assertion"
+            ]
+          },
+          "stage": {"type": "string"},
+          "slot": {"type": "string"},
+          "resource_id": {"type": "string"},
+          "assertion": {"type": "string"},
+          "verdict": {"enum": ["pass", "fail", "unknown", "not-applicable"]},
+          "provenance": {"type": "string"}
+        }
+      }
+    }
+  }
+}
