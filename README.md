@@ -3,7 +3,7 @@
 > Validate GPU trace JSON against a schema; emit bounded, redacted receipts.
 
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![python](https://img.shields.io/badge/python-3.11%2B-blue.svg)
+![python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
 ![version](https://img.shields.io/badge/version-0.1.0-informational.svg)
 [![CI](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml)
 [![part of: AI-accountability toolkit](https://img.shields.io/badge/part_of-AI--accountability_toolkit-7a5cff.svg)](https://harperz9.github.io)
@@ -18,8 +18,12 @@ python -m pip install gpu-trace-validator
 
 ```bash
 gpu-trace-validator trace.json
-gpu-trace-validator --schema schema/gpu_trace.schema.json --json trace.json
+gpu-trace-validator --expect-failures 0 --json trace.json
 ```
+
+The JSON Schema ships inside the package and is used by default, so `--schema`
+is only needed to override it with your own file. See [USAGE.md](USAGE.md) for
+worked examples, expected output, and the importable Python API.
 
 ## Notes
 
