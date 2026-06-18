@@ -1,10 +1,12 @@
-# gpu-trace-validator
+# GPU Trace Validator
 
-`gpu-trace-validator` validates GPU trace JSON fixtures and prints a compact
-summary of schema and assertion results. Report fields are redacted and bounded
-so fixture output stays useful without echoing local paths or credential-shaped
-values. It is built for graphics experiments that need inspectable frame or pass
-receipts without a heavyweight trace database.
+> Validate GPU trace JSON against a schema; emit bounded, redacted receipts.
+
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![python](https://img.shields.io/badge/python-3.11%2B-blue.svg)
+![version](https://img.shields.io/badge/version-0.1.0-informational.svg)
+[![CI](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml)
+[![part of: AI-accountability toolkit](https://img.shields.io/badge/part_of-AI--accountability_toolkit-7a5cff.svg)](https://harperz9.github.io)
 
 ## Install
 
@@ -27,3 +29,8 @@ gpu-trace-validator --schema schema/gpu_trace.schema.json --json trace.json
   expected count.
 - Reports are summaries, not certification or trust verdicts.
 - JSON schema files are bundled with the package.
+
+---
+**Zain Dana Harper** — small tools with explicit edges.
+[Portfolio](https://harperz9.github.io) · [HarperZ9](https://github.com/HarperZ9)
+<sub>Built with Claude Code; reviewed, tested, and owned by me.</sub>

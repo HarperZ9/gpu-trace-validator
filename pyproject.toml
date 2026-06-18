@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "gpu-trace-validator"
 version = "0.1.0"
-description = "Validate GPU trace JSON fixtures with schema checks and compact assertion summaries."
+description = "Validate GPU trace JSON against a schema; emit bounded, redacted receipts."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
