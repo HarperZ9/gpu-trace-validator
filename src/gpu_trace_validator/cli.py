@@ -16,8 +16,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
-    schema = load_json(args.schema)
-    trace = load_trace(args.trace)
+    try:
+        schema = load_json(args.schema)
+        trace = load_trace(args.trace)
+    except (FileNotFoundError, OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"error: {exc}")
+        return 1
     schema_errors = []
     try:
         from jsonschema import Draft202012Validator
