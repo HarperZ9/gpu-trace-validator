@@ -1,5 +1,40 @@
 # GPU Trace Validator
 
+![GPU Trace Validator hero](docs/brand/gpu-trace-validator-hero.png)
+
+> Validate render trace JSON and emit bounded, redacted receipts.
+
+GPU Trace Validator checks GPU or renderer trace fixtures against a bundled JSON
+schema. It reports assertion counts, expected failures, and redacted summaries so
+rendering demos can carry evidence without exposing raw private payloads.
+
+## Why it matters
+
+Creative and scientific renderers need more than screenshots. A trace validator
+gives demos and CI jobs a compact receipt that says whether the recorded render
+metadata still matches the expected contract.
+
+## Try it
+
+```bash
+python -m pip install -e ".[test]"
+gpu-trace-validator tests/fixtures/trace_pass.json
+python -m pytest
+```
+
+## What to test first
+
+- Validate a bundled or local trace JSON file.
+- Run with `--expect-failures 0 --json`.
+- Run the test suite before changing schemas or report wording.
+
+## Current status
+
+Python package and CLI for validating trace fixtures produced elsewhere. It does
+not capture GPU work and does not certify renderer correctness.
+
+## Existing technical notes
+
 > Validate GPU trace JSON against a schema; emit bounded, redacted receipts.
 
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
