@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Best-effort demo — not runtime-verified by author.
+# Best-effort demo -- not runtime-verified by author.
 """End-to-end demo of gpu-trace-validator.
 
 Exercises the public Python API and the CLI entry point against the bundled
