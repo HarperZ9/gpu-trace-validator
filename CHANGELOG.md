@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Refreshes public/developer delivery with repo-local agent instructions,
+  current GitHub Actions majors, and ASCII-safe public documentation.
 - Redacts credential-shaped strings and absolute local paths from validation
   payload fields.
 - Updates bundled trace fixtures so they satisfy the packaged schema.

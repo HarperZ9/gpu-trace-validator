@@ -37,7 +37,7 @@ The schema ships inside the package, so you normally do not pass `--schema`.
   `--expect-failures` is omitted and at least one assertion failed, or if
   `--expect-failures N` is given and the observed failure count is not `N`.
 - With `--expect-failures N`, a trace whose failures match `N` reports `pass`
-  even though individual assertions failed — this is how you encode
+  even though individual assertions failed -- this is how you encode
   "these failures are expected".
 
 ### Redaction
