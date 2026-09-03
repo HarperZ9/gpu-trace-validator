@@ -1,0 +1,86 @@
+{
+  "header": {
+    "name": "gpu-trace-validator",
+    "role": "render traces, checked against a contract",
+    "tagline": "What a render recorded, checked against what it promised.",
+    "words": ["trace", "event", "assertion", "verdict", "receipt"]
+  },
+  "flows": [
+    {
+      "file": "trace-lane.svg",
+      "kicker": "one trace, one status",
+      "title": "What the validator reads before it reports on a recorded frame",
+      "footnote": "The validator never captures GPU work. It reads a trace somebody else recorded and says whether that recording still matches the contract it was written against.",
+      "alt": "Eight stages of validating one recorded trace: trace, schema, source, events, assertions, verdicts, expectation, and exit code. A trace is one JSON object; a root that is an array or a string is refused before any check runs. Six fields are required at the root, and an unexpected property is named with its path rather than ignored, at the root and inside every frame, resource and event. Source records one of four capture kinds, from a JSON replay, a RenderDoc capture, a live hook, or a hand-written fixture, alongside where it came from. Events carry nine kinds, each pinned to a sequence number and a frame, and errors are sorted by path so two runs over the same trace read alike. Only the assertion kind carries a verdict. Verdicts have four values, of which two are counted: a failure and an unknown. A verdict of not-applicable is counted as neither, so it lands with the passes. Expectation compares observed failures against a number the caller supplied. The exit code is zero unless something was refused or a count did not match. Three outcomes: pass, fail, and not read.",
+      "stages": [
+        {"title": "Trace", "note": "One JSON object. A list is refused at the door."},
+        {"title": "Schema", "note": "Six required fields. An extra one is named."},
+        {"title": "Source", "note": "Four capture kinds, and where it came from."},
+        {"title": "Events", "note": "Nine kinds, sorted, each pinned to a frame."},
+        {"title": "Assertions", "note": "Only one of the nine carries a verdict."},
+        {"title": "Verdicts", "note": "Four values, and two of them count."},
+        {"title": "Expectation", "note": "Observed failures against a number you gave."},
+        {"title": "Exit code", "note": "Zero unless something was refused or missed."}
+      ],
+      "returns": [
+        {"from": 3, "to": 1, "label": "AN UNKNOWN FIELD IS NAMED, NOT IGNORED"},
+        {"from": 6, "to": 4, "label": "AN UNKNOWN VERDICT NEVER FAILS THE RUN"}
+      ],
+      "outcomes": [
+        {"label": "PASS", "note": "nothing refused, and nothing missed", "tone": "verified"},
+        {"label": "FAIL", "note": "a schema error, or a count that moved", "tone": "drift"},
+        {"label": "NOT READ", "note": "the root of the file is not an object", "tone": "none"}
+      ]
+    },
+    {
+      "file": "expectation-lane.svg",
+      "kicker": "a failure you expected",
+      "title": "How a count you supply turns a trace that fails on purpose into a pass",
+      "footnote": "A check that cannot fail proves nothing, so a fixture recorded to break is worth keeping. Naming the number of failures up front is what separates a fixture doing its job from a renderer that quietly regressed.",
+      "alt": "Eight stages of an expectation run: fixture, count, observed, compare, summary, redact, bound, and receipt. A fixture may be recorded to fail on purpose, which is how a check proves it can fail at all. The caller names how many assertion failures to expect. The validator counts how many the trace actually carries. The comparison runs in both directions, so fewer failures than expected is refused exactly as firmly as more. With no expected count supplied, the expectation is reported as not checked and any failure at all fails the run. Each failure is summarized into at most nine named fields: sequence, frame, pass, stage, slot, resource, the assertion text, the verdict, and the provenance. No raw buffer or payload is carried out. Every string in the summary goes through the same redactor, which removes private key blocks, cloud access key ids, three token prefixes, named secrets, and absolute paths of both kinds. Nothing longer than two hundred and forty characters survives, and truncation runs after redaction. The result is one JSON object, printed whole or as a short summary. Three outcomes: matched, missed, and not checked.",
+      "stages": [
+        {"title": "Fixture", "note": "A trace recorded to fail on purpose."},
+        {"title": "Count", "note": "How many assertion failures you expect."},
+        {"title": "Observed", "note": "How many the trace actually carries."},
+        {"title": "Compare", "note": "Equal, and the expectation is satisfied."},
+        {"title": "Summary", "note": "Nine fields per failure, no raw payload."},
+        {"title": "Redact", "note": "Every string goes through the scrubber."},
+        {"title": "Bound", "note": "Nothing longer than two hundred forty characters."},
+        {"title": "Receipt", "note": "One JSON object, printed or summarized."}
+      ],
+      "returns": [
+        {"from": 3, "to": 1, "label": "A COUNT UNSET MEANS ANY FAILURE FAILS"},
+        {"from": 6, "to": 4, "label": "A SUMMARY CARRIES KEYS, NEVER A BUFFER"}
+      ],
+      "outcomes": [
+        {"label": "MATCHED", "note": "observed failures equal the count given", "tone": "verified"},
+        {"label": "MISSED", "note": "the count moved in either direction", "tone": "drift"},
+        {"label": "NOT CHECKED", "note": "no expectation was given to check", "tone": "none"}
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "file": "status-table.svg",
+      "kicker": "what makes a run fail",
+      "title": "Every way a trace ends, and the status it reports",
+      "source": "gpu_trace_validator.validator.build_payload",
+      "heads": ["what the trace holds", "reported", "why it lands there"],
+      "fields": [
+        {"key": "a failed verdict", "value": "FAIL", "note": "With no expected count, one failure is an error, and the error text names how many failures were seen."},
+        {"key": "an unknown verdict", "value": "PASS", "tone": "drift", "note": "The assertion report reads unknown while the run still exits zero. Unknown is a reading about the trace, not a refusal of it."},
+        {"key": "every verdict passing", "value": "PASS", "note": "The ordinary case. The assertion report and the run agree, and the receipt carries the counts either way."},
+        {"key": "nothing asserted", "value": "PASS", "note": "A trace can carry draws and presents and assert nothing at all. Nothing was refused, so nothing fails."},
+        {"key": "not-applicable", "value": "PASS", "note": "The fourth verdict is counted as neither a failure nor an unknown, so a trace full of them lands with the passes."},
+        {"key": "count matched", "value": "PASS", "note": "A fixture recorded to fail on purpose passes when the failures observed equal the number the caller supplied."},
+        {"key": "count missed", "value": "FAIL", "note": "The comparison runs in both directions. Fewer failures than expected is refused exactly as firmly as more."},
+        {"key": "an extra field", "value": "FAIL", "note": "Unknown properties are refused at the root, in a frame, in a resource and in an event, and named with the path that carried them."},
+        {"key": "a value off the list", "value": "FAIL", "note": "Four capture kinds, nine event types, four verdicts. A value outside any of the three closed sets is named where it sits."},
+        {"key": "no validator", "value": "FAIL", "note": "If the schema library will not import, or the schema itself will not compile, that error becomes the schema error rather than a silent pass."},
+        {"key": "not an object", "value": "ERROR", "note": "A root that is an array or a string is refused before any check runs, and the command exits one without a receipt."}
+      ],
+      "alt": "Eleven ways a trace run ends, one to a row, with the status reported and why it lands there. A failed verdict fails the run when no expected count was given, and the error names how many failures were seen. The accented row is the unknown verdict: the assertion report reads unknown while the run still exits zero, because unknown is a reading about the trace rather than a refusal of it. A trace where every verdict passes reports pass. So does a trace that asserts nothing at all, since nothing was refused. So does a trace full of not-applicable verdicts, which are counted as neither failures nor unknowns. A fixture recorded to fail on purpose passes when the failures observed equal the number supplied, and fails when that count moves in either direction, since fewer failures than expected is refused exactly as firmly as more. An unexpected property fails wherever it sits, at the root or inside a frame, a resource or an event. A value outside any of the three closed sets fails and is named with its path. If the schema library will not import, or the schema will not compile, that error is reported rather than passed over. A trace whose root is not a JSON object is refused before any check runs, and the command exits one without printing a receipt.",
+      "footnote": "Two statuses are in play and they answer different questions. The assertion report reads pass, unknown or fail about what the trace recorded. The run reports pass or fail about whether anything was refused, and only the second one sets the exit code."
+    }
+  ]
+}
