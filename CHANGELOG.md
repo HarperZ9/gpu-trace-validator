@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Documents GitHub tag and source-checkout install paths while PyPI has no
+  `gpu-trace-validator` project.
 - Refreshes public/developer delivery with repo-local agent instructions,
   current GitHub Actions majors, and ASCII-safe public documentation.
 - Redacts credential-shaped strings and absolute local paths from validation

@@ -8,8 +8,21 @@ It does **not** capture GPU work. It validates fixtures produced elsewhere.
 
 ## Install
 
+`gpu-trace-validator` is not currently published on PyPI. Install from the
+GitHub release tag or from a local checkout.
+
+Pinned release tag:
+
 ```bash
-python -m pip install gpu-trace-validator
+python -m pip install "gpu-trace-validator @ git+https://github.com/HarperZ9/gpu-trace-validator.git@v0.1.0"
+```
+
+Local checkout for examples and tests:
+
+```bash
+git clone https://github.com/HarperZ9/gpu-trace-validator
+cd gpu-trace-validator
+python -m pip install -e ".[test]"
 ```
 
 Requires Python 3.10+. The only runtime dependency is `jsonschema>=4.22`.
@@ -30,6 +43,13 @@ gpu-trace-validator [--schema PATH] [--expect-failures N] [--json] TRACE
 Exit code is `0` when the overall status is `pass` and `1` when it is `fail`.
 
 The schema ships inside the package, so you normally do not pass `--schema`.
+
+If the console script is not on your `PATH`, use the module form:
+
+```bash
+python -m gpu_trace_validator --help
+python -m gpu_trace_validator tests/fixtures/trace_pass.json
+```
 
 ### Status rules
 
@@ -192,3 +212,13 @@ schema = load_json(DEFAULT_SCHEMA)
 errors = [e.message for e in Draft202012Validator(schema).iter_errors(trace)]
 report = build_payload(trace, errors, expected_failures=2)
 ```
+
+## Troubleshooting
+
+- `No matching distribution found for gpu-trace-validator`: the package is not
+  on PyPI yet. Use the GitHub tag install or a local checkout.
+- `gpu-trace-validator: command not found`: use `python -m gpu_trace_validator`
+  or confirm that your virtual environment's scripts directory is on `PATH`.
+- `ModuleNotFoundError: jsonschema`: install the package instead of running from
+  an uninstalled source tree, or run `python -m pip install -e ".[test]"` from
+  the checkout.

@@ -17,7 +17,10 @@ metadata still matches the expected contract.
 ## Try it
 
 ```bash
+git clone https://github.com/HarperZ9/gpu-trace-validator
+cd gpu-trace-validator
 python -m pip install -e ".[test]"
+python -m gpu_trace_validator --help
 gpu-trace-validator tests/fixtures/trace_pass.json
 python -m pytest
 ```
@@ -47,8 +50,22 @@ not capture GPU work and does not certify renderer correctness.
 
 ## Install
 
+`gpu-trace-validator` is not currently published on PyPI. A bare
+`python -m pip install gpu-trace-validator` will fail until a package registry
+release exists.
+
+For a pinned release install, use the GitHub release tag:
+
 ```bash
-python -m pip install gpu-trace-validator
+python -m pip install "gpu-trace-validator @ git+https://github.com/HarperZ9/gpu-trace-validator.git@v0.1.0"
+```
+
+For local examples, tests, and schema work, use a source checkout:
+
+```bash
+git clone https://github.com/HarperZ9/gpu-trace-validator
+cd gpu-trace-validator
+python -m pip install -e ".[test]"
 ```
 
 ## Usage
