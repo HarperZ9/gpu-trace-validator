@@ -67,9 +67,15 @@ def test_every_drawing_is_committed_and_reaches_the_page() -> None:
     receipt = _receipt()
     assert {output["file"] for output in receipt["outputs"]} == set(DRAWINGS)
     readme = (_REPO / "README.md").read_text(encoding="utf-8")
+    front = readme
+    # The previous header left the README on 4 October 2026 and is recorded in the brand notes;
+    # a page here is the README or a doc under docs/, the same set tools/check_repo_art.py uses.
+    readme += "".join(q.read_text(encoding="utf-8") for q in sorted((_REPO / "docs").rglob("*.md")))
     for drawing in DRAWINGS:
         assert (_REPO / drawing).is_file(), drawing
         assert drawing in readme, drawing
+    for hero in ("docs/art/hero-dark.svg", "docs/art/hero-light.svg"):
+        assert (_REPO / hero).is_file() and hero in front, hero
 
 
 def test_the_alt_text_in_the_readme_is_the_alt_text_in_the_spec() -> None:
