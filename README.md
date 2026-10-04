@@ -40,9 +40,9 @@ not capture GPU work and does not certify renderer correctness.
 
 > Validate GPU trace JSON against a schema; emit bounded, redacted receipts.
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![license: FSL-1.1-MIT](https://img.shields.io/badge/license-FSL--1.1--MIT-blue.svg)](LICENSE)
 ![python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
-![version](https://img.shields.io/badge/version-0.1.0-informational.svg)
+![version](https://img.shields.io/badge/version-0.2.0-informational.svg)
 [![CI](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml)
 [![part of: AI-accountability toolkit](https://img.shields.io/badge/part_of-AI--accountability_toolkit-7a5cff.svg)](https://harperz9.github.io)
 
@@ -105,6 +105,10 @@ Keep the public README, package metadata, and examples aligned with current beha
 python -m pip install -e ".[test]"
 python -m pytest
 ```
+
+## License
+
+From v0.2.0, code is licensed FSL-1.1-MIT. Earlier releases remain under MIT. FSL-1.1-MIT is the Functional Source License, Version 1.1, with MIT as the future licence: each release becomes available under MIT two years after it is made available. See [LICENSE](LICENSE). Every commit in this repository is by the author.
 
 ---
 
