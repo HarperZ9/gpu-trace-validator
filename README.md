@@ -1,8 +1,20 @@
-<p align="center"><img src="docs/art/gpu-trace-validator-header.svg" alt="GPU Trace Validator" width="100%"></p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/HarperZ9/gpu-trace-validator/main/docs/art/hero-dark.svg">
+  <img src="https://raw.githubusercontent.com/HarperZ9/gpu-trace-validator/main/docs/art/hero-light.svg" alt="gpu-trace-validator: Validates GPU trace JSON against a schema, with redacted receipts. Parallel rays pass through a lens drawn in fine lines, gather at a bright core and spread out past it." width="100%">
+</picture>
 
-# GPU Trace Validator
+# gpu-trace-validator
 
-> Validate render trace JSON and emit bounded, redacted receipts.
+Validates GPU trace JSON against a schema, with redacted receipts.
+
+```
+git clone https://github.com/HarperZ9/gpu-trace-validator
+```
+
+[![version: 0.2.0](https://img.shields.io/badge/version-0.2.0-e6e1d6?style=flat-square&labelColor=1a1712)](https://github.com/HarperZ9/gpu-trace-validator/releases/latest)
+[![CI](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/HarperZ9/gpu-trace-validator/actions/workflows/ci.yml)
+[![license](https://img.shields.io/badge/license-FSL--1.1--MIT-e6e1d6?style=flat-square&labelColor=1a1712)](https://github.com/HarperZ9/gpu-trace-validator/blob/main/LICENSE)
+![python 3.10+](https://img.shields.io/badge/python-3.10%2B-e6e1d6?style=flat-square&labelColor=1a1712)
 
 GPU Trace Validator checks GPU or renderer trace fixtures against a bundled JSON
 schema. It reports assertion counts, expected failures, and redacted summaries so
