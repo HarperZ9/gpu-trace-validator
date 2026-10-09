@@ -20,6 +20,12 @@ GPU Trace Validator checks GPU or renderer trace fixtures against a bundled JSON
 schema. It reports assertion counts, expected failures, and redacted summaries so
 rendering demos can carry evidence without exposing raw private payloads.
 
+## See it work, step by step
+
+The [animated explainer](https://harperz9.github.io/repo-explainers/gpu-trace-validator.html)
+walks through the shipped pass and fail fixtures: schema validation, an unexpected field named by its path, a deliberate failure matched against an expected count in both directions, and the redacted JSON receipt. Every value on it is output from this repository. Its
+source is [docs/explainer/index.html](docs/explainer/index.html).
+
 ## Why it matters
 
 Creative and scientific renderers need more than screenshots. A trace validator
