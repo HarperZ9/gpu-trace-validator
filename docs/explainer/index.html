@@ -121,6 +121,14 @@ footer.foot p{max-width:70ch;margin:0 0 .6rem}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
 }
+.film{margin:1rem 0 0;max-width:56rem}
+.film video{width:100%;height:auto;display:block;background:#000;border:1px solid var(--line)}
+.film figcaption{font-size:.9rem;color:var(--ink-soft);margin-top:.55rem;max-width:44rem;line-height:1.5}
+.soon{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);margin-top:.8rem}
+ol.walkthrough{padding-left:1.4rem;max-width:56rem;margin:1rem 0 0}
+ol.walkthrough li{margin:0 0 1.4rem}
+ol.walkthrough h3{margin:0 0 .3rem;font-size:1.05rem}
+ol.walkthrough p{margin:0 0 .3rem;max-width:44rem}
 
 /* generic scene kit: a pipeline strip, an input/output panel, a case picker, a table */
 .kscene{display:flex;flex-direction:column;gap:.8rem}
@@ -174,6 +182,18 @@ footer.foot p{max-width:70ch;margin:0 0 .6rem}
   <p class="src">Source: <a href="https://github.com/HarperZ9/gpu-trace-validator/blob/b205bd4bdea45d1b1e5c80cde2c75e439ab78afc/README.md">README.md</a> at b205bd4 (version 0.2.0)</p>
 </section>
 
+<section class="block wrap" aria-labelledby="watch">
+  <h2 id="watch">Watch</h2>
+  <figure class="film">
+    <video controls preload="none" playsinline crossorigin="anonymous" width="1920" height="1080" poster="https://harperz9.github.io/media/explainers/passing-check/poster.jpg">
+      <source src="https://harperz9.github.io/media/explainers/passing-check/passing-check.mp4" type="video/mp4">
+      <track kind="captions" src="https://harperz9.github.io/media/explainers/passing-check/passing-check.vtt" srclang="en" label="English">
+    </video>
+    <figcaption><b>A passing check can still be wrong</b> (2 min 24 s, narrated, captioned). With --expect-failures the validator shows it can fail on a known-bad trace, the test this film argues for. <a href="https://harperz9.github.io/explainers.html#passing-check-h">Transcript, sources and recall questions</a>.</figcaption>
+  </figure>
+  <p class="soon">Video walkthrough: coming with the next release.</p>
+</section>
+
 <section class="block wrap" aria-labelledby="how">
   <h2 id="how">How it works, one step at a time</h2>
   <p class="measure">Scroll, or use the step buttons. The panel uses the two fixtures shipped in <code>tests/fixtures/</code>. Every line is output from gpu-trace-validator at commit b205bd4.</p>
@@ -223,16 +243,27 @@ footer.foot p{max-width:70ch;margin:0 0 .6rem}
   </div>
 </section>
 
-<section class="block wrap" aria-labelledby="try">
-  <h2 id="try">Try it</h2>
-  <div class="measure"><p>Install from a checkout (Python 3.10 or newer); it is not on PyPI.</p></div>
+<section class="block wrap" aria-labelledby="walkthrough">
+  <h2 id="walkthrough">Walkthrough</h2>
+  <p class="measure">Install it, run it once, then use the main feature. Each command below is real, and so is its output.</p>
+  <ol class="walkthrough">
+    <li><h3>Install</h3><p>Install from a checkout. Python 3.10 or newer; it is not on PyPI.</p>
 <pre class="cmd"><code>$ git clone https://github.com/HarperZ9/gpu-trace-validator && cd gpu-trace-validator
-$ python -m pip install -e ".[test]"
-$ gpu-trace-validator tests/fixtures/trace_pass.json
+$ python -m pip install -e ".[test]"</code></pre></li>
+    <li><h3>First run: a passing trace</h3><p>Validate the bundled passing trace.</p>
+<pre class="cmd"><code>$ gpu-trace-validator tests/fixtures/trace_pass.json
 <span class="out">gpu_trace_validation: pass
 trace_id: trace-ok
-assertions: 1 total, 0 fail, 0 unknown</span>
-$ gpu-trace-validator --expect-failures 2 --json tests/fixtures/trace_fail.json</code></pre>
+assertions: 1 total, 0 fail, 0 unknown</span></code></pre></li>
+    <li><h3>A failing trace</h3><p>The failing fixture fails, as it should.</p>
+<pre class="cmd"><code>$ gpu-trace-validator tests/fixtures/trace_fail.json
+<span class="out">assertions: 2 total, 2 fail, 0 unknown
+error: observed 2 assertion failure(s)</span></code></pre></li>
+    <li><h3>Show the check can fail</h3><p>Declare how many failures the fixture must produce. Two expected and two found passes.</p>
+<pre class="cmd"><code>$ gpu-trace-validator --expect-failures 2 tests/fixtures/trace_fail.json
+<span class="out">gpu_trace_validation: pass
+assertions: 2 total, 2 fail, 0 unknown</span></code></pre></li>
+  </ol>
   <p class="src">Output from gpu-trace-validator at b205bd4 on Windows with Python 3.12.</p>
 </section>
 

@@ -26,6 +26,50 @@ The [animated explainer](https://harperz9.github.io/repo-explainers/gpu-trace-va
 walks through the shipped pass and fail fixtures: schema validation, an unexpected field named by its path, a deliberate failure matched against an expected count in both directions, and the redacted JSON receipt. Every value on it is output from this repository. Its
 source is [docs/explainer/index.html](docs/explainer/index.html).
 
+## Watch
+
+[![A passing check can still be wrong: a narrated film, 2 min 24 s](https://harperz9.github.io/media/explainers/passing-check/poster.jpg)](https://harperz9.github.io/explainers.html#passing-check-h)
+
+**[A passing check can still be wrong](https://harperz9.github.io/explainers.html#passing-check-h)** (2 min 24 s, narrated, captioned). With --expect-failures the validator shows it can fail on a known-bad trace, the test this film argues for. The film page carries the transcript, the sources and recall questions.
+
+Video walkthrough: coming with the next release.
+
+## Walkthrough
+
+Install it, run it once, then use the main feature. Each command below is real, and so is its output.
+
+1. **Install.** Install from a checkout. Python 3.10 or newer; it is not on PyPI.
+
+   ```text
+   $ git clone https://github.com/HarperZ9/gpu-trace-validator && cd gpu-trace-validator
+   $ python -m pip install -e ".[test]"
+   ```
+
+2. **First run: a passing trace.** Validate the bundled passing trace.
+
+   ```text
+   $ gpu-trace-validator tests/fixtures/trace_pass.json
+   gpu_trace_validation: pass
+   trace_id: trace-ok
+   assertions: 1 total, 0 fail, 0 unknown
+   ```
+
+3. **A failing trace.** The failing fixture fails, as it should.
+
+   ```text
+   $ gpu-trace-validator tests/fixtures/trace_fail.json
+   assertions: 2 total, 2 fail, 0 unknown
+   error: observed 2 assertion failure(s)
+   ```
+
+4. **Show the check can fail.** Declare how many failures the fixture must produce. Two expected and two found passes.
+
+   ```text
+   $ gpu-trace-validator --expect-failures 2 tests/fixtures/trace_fail.json
+   gpu_trace_validation: pass
+   assertions: 2 total, 2 fail, 0 unknown
+   ```
+
 ## Why it matters
 
 Creative and scientific renderers need more than screenshots. A trace validator
