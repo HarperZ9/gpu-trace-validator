@@ -175,7 +175,7 @@ ol.walkthrough p{margin:0 0 .3rem;max-width:44rem}
   </div>
   <ul class="uses">
     <li><b>A closed schema</b>Six required root fields, and an unexpected property is named with its path anywhere in the trace.</li>
-    <li><b>Counts, not vibes</b>Each assertion carries pass, fail, unknown or not applicable, and the failures and unknowns are counted.</li>
+    <li><b>Counted verdicts</b>Each assertion carries one of four verdicts, and the run counts the failures and unknowns.</li>
     <li><b>Failure on purpose</b>A fixture recorded to fail passes only when the failures equal the number you supplied.</li>
     <li><b>Redacted receipts</b>Each failure is summarised in nine named fields, with secrets and absolute paths removed.</li>
   </ul>
@@ -220,12 +220,12 @@ ol.walkthrough p{margin:0 0 .3rem;max-width:44rem}
       </div></li>
       <li class="step" tabindex="-1" data-scene="k1" data-state="s"><div class="card">
         <span class="num">02</span><h3>Validate it</h3>
-        <p>The bundled schema checks every field, then the assertions are counted. One assertion, no failures, no unknowns: pass, exit 0.</p>
+        <p>The bundled schema checks every field, then the assertions are counted. One assertion, zero failures, zero unknowns: pass, exit 0.</p>
         <p class="src">Source: <a href="https://github.com/HarperZ9/gpu-trace-validator/blob/b205bd4bdea45d1b1e5c80cde2c75e439ab78afc/src/gpu_trace_validator/validator.py">src/gpu_trace_validator/validator.py</a></p>
       </div></li>
       <li class="step" tabindex="-1" data-scene="k2" data-state="s"><div class="card">
         <span class="num">03</span><h3>An unexpected field is named, wherever it sits</h3>
-        <p>Add a field the schema does not define, such as <code>approved</code> inside a frame. The trace fails and the error gives the path.</p>
+        <p>Add a field outside the schema, such as <code>approved</code> inside a frame. The trace fails and the error gives the path.</p>
         <p class="src">Source: <a href="https://github.com/HarperZ9/gpu-trace-validator/blob/b205bd4bdea45d1b1e5c80cde2c75e439ab78afc/src/gpu_trace_validator/schemas">src/gpu_trace_validator/schemas</a>; README.md, the trace lane</p>
       </div></li>
       <li class="step" tabindex="-1" data-scene="k3" data-state="s"><div class="card">
@@ -235,7 +235,7 @@ ol.walkthrough p{margin:0 0 .3rem;max-width:44rem}
       </div></li>
       <li class="step" tabindex="-1" data-scene="k4" data-state="s"><div class="card">
         <span class="num">05</span><h3>The receipt</h3>
-        <p>With <code>--json</code> the run prints one object: the expectation and its status, the assertion counts, and each failure summarised by sequence, frame, pass, stage, slot, resource, assertion, verdict and provenance. No buffer or payload is carried out, and every string goes through the redactor first.</p>
+        <p>With <code>--json</code> the run prints one object: the expectation and its status, the assertion counts, and each failure summarised by sequence, frame, pass, stage, slot, resource, assertion, verdict and provenance. Buffers and payloads stay in the trace, and every string goes through the redactor first.</p>
         <p class="src">Source: <a href="https://github.com/HarperZ9/gpu-trace-validator/blob/b205bd4bdea45d1b1e5c80cde2c75e439ab78afc/src/gpu_trace_validator/cli.py">src/gpu_trace_validator/cli.py</a>; README.md, the expectation lane</p>
       </div></li>
     </ol>
@@ -246,7 +246,7 @@ ol.walkthrough p{margin:0 0 .3rem;max-width:44rem}
   <h2 id="walkthrough">Walkthrough</h2>
   <p class="measure">Install it, run it once, then use the main feature. Each command below is real, and so is its output.</p>
   <ol class="walkthrough">
-    <li><h3>Install</h3><p>Install from a checkout. Python 3.10 or newer; it is not on PyPI.</p>
+    <li><h3>Install</h3><p>Install from a checkout of the repository. Python 3.10 or newer.</p>
 <pre class="cmd"><code>$ git clone https://github.com/HarperZ9/gpu-trace-validator && cd gpu-trace-validator
 $ python -m pip install -e ".[test]"</code></pre></li>
     <li><h3>First run: a passing trace</h3><p>Validate the bundled passing trace.</p>
@@ -267,11 +267,11 @@ assertions: 2 total, 2 fail, 0 unknown</span></code></pre></li>
 </section>
 
 <section class="block wrap" aria-labelledby="limits">
-  <h2 id="limits">What it does not do</h2>
+  <h2 id="limits">Limits</h2>
   <ul class="limits">
-    <li>It validates traces produced elsewhere. It does not capture GPU work.</li>
-    <li>A pass says the trace matches the schema and the expected failure count. It does not certify that the renderer is correct.</li>
-    <li>An unknown verdict is reported, and the run can still exit 0, because unknown is a reading about the trace and not a refusal of it.</li>
+    <li>It validates traces that a capture tool produced. Capture the GPU work with your own tool first.</li>
+    <li>A pass says the trace matches the schema and the expected failure count. Renderer correctness needs its own tests.</li>
+    <li>An unknown verdict is reported, and the run can still exit 0: unknown describes what the trace holds, and the run accepts it.</li>
     <li>Summaries are truncated at 240 characters after redaction.</li>
   </ul>
   <p class="src">Source: README.md at b205bd4, "Current status", "Notes" and the status table</p>
@@ -282,7 +282,7 @@ assertions: 2 total, 2 fail, 0 unknown</span></code></pre></li>
   <p class="measure">Answer each one in your head before you open it.</p>
   <details><summary>Why does a fixture that fails on purpose pass with --expect-failures 2?</summary><p>Its two failures equal the number supplied, which is what the run checks.</p></details>
   <details><summary>Expect 3 failures when 2 occur. What happens?</summary><p>The run fails: fewer failures than expected is refused as firmly as more.</p></details>
-  <details><summary>What does the receipt carry for each failure?</summary><p>Nine named fields: sequence, frame, pass, stage, slot, resource, assertion, verdict and provenance. No raw payload.</p></details>
+  <details><summary>What does the receipt carry for each failure?</summary><p>Nine named fields: sequence, frame, pass, stage, slot, resource, assertion, verdict and provenance. Raw payloads stay out.</p></details>
 </section>
 </main>
 <footer class="foot wrap">
